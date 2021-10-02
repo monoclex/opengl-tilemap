@@ -1,20 +1,14 @@
 #![feature(array_map)]
 
-use std::{
-    fs::File,
-    io::BufReader,
-    sync::{atomic::AtomicUsize, Arc},
-    time::Instant,
-};
+use std::time::Instant;
 
 extern crate glium;
 
 use glium::{
     draw_parameters::ProvokingVertex,
     glutin::{
-        self,
-        dpi::{PhysicalPosition, PhysicalSize},
-        event::{DeviceEvent, Event, WindowEvent},
+        dpi::PhysicalSize,
+        event::{Event, WindowEvent},
         event_loop::{ControlFlow, EventLoop},
         window::WindowBuilder,
         ContextBuilder,
@@ -22,7 +16,7 @@ use glium::{
     implement_vertex,
     texture::RawImage2d,
     uniform,
-    uniforms::{MagnifySamplerFilter, MinifySamplerFilter},
+    uniforms::{MagnifySamplerFilter, MinifySamplerFilter, SamplerWrapFunction},
     Display, DrawParameters, Program, Surface, Texture2d, VertexBuffer,
 };
 use image::ImageFormat;
@@ -291,15 +285,15 @@ fn main() {
             ..Default::default()
         };
 
-        // sample our tilemap with nearest neighbor sampling when zoomed in, and
-        // linear when zoomed out
+        // sample our tilemap with nearest neighbor sampling
         //
         // this is because when zoomed in, using nearest neighbor makes the blocks
-        // look super crisp. when zoomed out, linear interpolation allows it to
-        // get approximately the right color.
+        // look super crisp. when zoomed out, using linear interpolation would allow
+        // it to get approximately the right color, but we also get these nast seams
+        // (try out linear interpolation! see the seams!) so i've set them to nearest
         let tilemap_sampler = (tilemap.sampled())
             .magnify_filter(MagnifySamplerFilter::Nearest)
-            .minify_filter(MinifySamplerFilter::LinearMipmapLinear);
+            .minify_filter(MinifySamplerFilter::Nearest);
 
         // now this sampler is *important* to *stay nearest neighbor*.
         //
