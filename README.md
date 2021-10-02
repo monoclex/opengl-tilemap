@@ -2,6 +2,8 @@
 
 This is an impementation of an OpenGL tilemap as a single quad. The code is
 lovingly documented, so you should be able to figure out what it's doing.
+In fact, the entire point of this is entirely to hold the code. This readme
+is less important than the code, go read it!
 
 There is a [brief but accompanying blog post here][blog]
 
@@ -21,4 +23,4 @@ There is a [brief but accompanying blog post here][blog]
 
 Dive in at `/src/main.rs`, then read the vertex and fragment shaders. Good luck!
 
-[blog]: sirjosh3917.com/posts/implementing-fast-opengl-tilemap
+[blog]: https://sirjosh3917.com/posts/implementing-fast-opengl-tilemap
